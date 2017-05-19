@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
+        tv.setText(stringFromJNI() + urlprotocolinfo() + avfilterinfo() + avcodecinfo() + avfilterinfo());
     }
 
     /**
@@ -26,4 +26,12 @@ public class MainActivity extends AppCompatActivity {
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
+    public native String urlprotocolinfo();
+
+    public native String avformatinfo();
+
+    public native String avcodecinfo();
+
+    public native String avfilterinfo();
 }
