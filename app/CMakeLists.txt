@@ -7,15 +7,12 @@ find_library(
               log-lib
               log )
 
-set(lib_dir ${CMAKE_SOURCE_DIR}/../../../../libs)
-
 add_library( avutil-55
              SHARED
              IMPORTED )
 set_target_properties( avutil-55
                        PROPERTIES IMPORTED_LOCATION
                        ../../../../libs/armeabi-v7a/libavutil-55.so )
-
 add_library( swresample-2
              SHARED
              IMPORTED )
