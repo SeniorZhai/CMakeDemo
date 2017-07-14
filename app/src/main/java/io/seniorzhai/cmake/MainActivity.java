@@ -1,58 +1,118 @@
 package io.seniorzhai.cmake;
 
-import android.support.v7.app.AppCompatActivity;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("avutil");
+        System.loadLibrary("fdk-aac");
+        System.loadLibrary("avcodec");
+        System.loadLibrary("avformat");
+        System.loadLibrary("avfilter");
+        System.loadLibrary("swresample");
+        System.loadLibrary("swscale");
+        System.loadLibrary("ffmpeg_jni");
     }
 
-    TextView tv;
+    private final int PERMISSION_REQUEST_CODE = 0x001;
+    private static final String[] permissionManifest = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    private EditText inFile, outFile;
+    private boolean isInit = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv = (TextView) findViewById(R.id.sample_text);
+        inFile = (EditText) findViewById(R.id.inFile);
+        outFile = (EditText) findViewById(R.id.outFile);
     }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String avformatinfo();
-
-    public native String urlprotocolinfo();
-
-    private native String avcodecinfo();
-
-    private native String avconfiguration();
-
-    private native String avfilter();
-
-    public void url(View view) {
-        tv.setText(urlprotocolinfo());
+    public void task(View view) {
+        permissionCheck();
     }
 
-    public void format(View view) {
-        tv.setText(avformatinfo());
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    if (Manifest.permission.CAMERA.equals(permissions[i])) {
+                        task();
+                    } else if (Manifest.permission.RECORD_AUDIO.equals(permissions[i])) {
+
+                    }
+                }
+            }
+        }
     }
 
-
-    public void avcodec(View view) {
-        tv.setText(avcodecinfo());
+    private void permissionCheck() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            boolean permissionState = true;
+            for (String permission : permissionManifest) {
+                if (ContextCompat.checkSelfPermission(this, permission)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    permissionState = false;
+                }
+            }
+            if (!permissionState) {
+                ActivityCompat.requestPermissions(this, permissionManifest, PERMISSION_REQUEST_CODE);
+            } else {
+                task();
+            }
+        } else {
+            task();
+        }
     }
 
-    public void configuration(View view) {
-        tv.setText(avconfiguration());
+    private void task() {
+        if (isInit) {
+            isInit = false;
+            initFFmpeg(true, "/storage/emulated/0/ffmpeg_log.txt");
+        }
+        captureThumbnails(inFile.getText().toString(), outFile.getText().toString());
     }
 
-    public void filter(View view) {
-        tv.setText(avfilter());
+    private void captureThumbnails(String in, String out) {
+        int result = ffmpegRunCMD(getCaptureThumbnailsCMD(in, out, null));
+        Toast.makeText(this, result == 0 ? "success" : "fail", Toast.LENGTH_SHORT).show();
     }
+
+    public static native int initFFmpeg(boolean debug, String logPath);
+
+    private static String getCaptureThumbnailsCMD(String videopath, String outoutPath, String ss) {
+        if (ss == null) {
+            ss = "";
+        } else {
+            ss = " -ss " + ss;
+        }
+
+        return String.format("ffmpeg -y -i %s %s -vframes 1 %s ", videopath, ss, outoutPath);
+    }
+
+    public static int ffmpegRunCMD(String cmd) {
+        String regulation = "[ \\t]+";
+        final String[] split = cmd.split(regulation);
+        return CMDRun(split);
+    }
+
+    public static native int CMDRun(String cmd[]);
+
 }

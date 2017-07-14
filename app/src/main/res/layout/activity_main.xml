@@ -1,85 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="io.seniorzhai.cmake.MainActivity">
 
-    <Button
-        android:id="@+id/bn1"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/inFile"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="url"
-        android:text="url_info"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="/storage/emulated/0/Movies/MOCR/0.mp4" />
 
-    <Button
-        android:id="@+id/bn2"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/outFile"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="format"
-        android:text="format_info"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="/storage/emulated/0/Movies/MOCR/0.jpeg" />
 
     <Button
-        android:id="@+id/bn3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="avcodec"
-        android:text="avcodec_info"
-        app:layout_constraintRight_toLeftOf="@+id/bn2"
-        app:layout_constraintStart_toEndOf="@id/bn1"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:onClick="task"
+        android:text="run" />
 
-    <Button
-        android:id="@+id/bn4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="configuration"
-        android:text="avcodec_info"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bn1" />
 
-    <Button
-        android:id="@+id/bn5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="filter"
-        android:text="filter_info"
-        app:layout_constraintLeft_toRightOf="@id/bn4"
-        app:layout_constraintTop_toBottomOf="@id/bn1" />
-
-    <ScrollView
-        android:layout_width="368dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bn4">
-
-        <TextView
-            android:id="@+id/sample_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hello World!" />
-    </ScrollView>
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

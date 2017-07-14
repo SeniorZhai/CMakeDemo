@@ -1,86 +1,338 @@
-# CMake使用的最小版本
+# For more information about using CMake with Android Studio, read the
+# documentation: https://d.android.com/studio/projects/add-native-code.html
+
+# Sets the minimum version of CMake required to build the native library.
+
 cmake_minimum_required(VERSION 3.4.1)
 
-# 创建so库无关而是用NDK的Apis或者库
-# log-lib是log库的位置
-find_library(
+# Creates and names a library, sets it as either STATIC
+# or SHARED, and provides the relative paths to its source code.
+# You can define multiple libraries, and CMake builds them for you.
+# Gradle automatically packages shared libraries with your APK.
+
+add_library( # Sets the name of the library.
+             ffmpeg_jni
+
+
+             # Sets the library as a shared library.
+             SHARED
+
+             # Provides a relative path to your source file(s).
+              src/main/cpp/yuv_encode_h264.cpp
+              src/main/cpp/pcm_encode_aac.cpp
+              src/main/cpp/media_muxer.cpp
+              src/main/cpp/jni_handler.cpp
+              src/main/cpp/ffmpeg_jni.cpp
+              src/main/cpp/threadsafe_queue.cpp
+              src/main/cpp/n_log.cpp
+              src/main/cpp/cmdutils.c
+              src/main/cpp/ffmpeg.c
+              src/main/cpp/ffmpeg_filter.c
+              src/main/cpp/ffmpeg_opt.c
+              src/main/cpp/ffmpeg_cmd_run.c
+              src/main/cpp/ffmpeg_config.cpp
+             )
+
+add_library(
+            avcodec
+            SHARED
+            IMPORTED
+            )
+
+add_library(
+            avfilter
+            SHARED
+            IMPORTED
+             )
+
+
+add_library(
+            avformat
+            SHARED
+            IMPORTED
+            )
+
+
+add_library(
+            avutil
+            SHARED
+            IMPORTED
+            )
+
+add_library(
+            swresample
+            SHARED
+            IMPORTED
+            )
+
+add_library(
+            swscale
+            SHARED
+            IMPORTED
+            )
+
+
+add_library(
+            fdk-aac
+            SHARED
+            IMPORTED
+            )
+
+if(${ANDROID_ABI} STREQUAL "armeabi")
+set_target_properties(
+    avcodec
+    PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/armeabi/libavcodec.so
+    )
+
+set_target_properties(
+        avfilter
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/libs/armeabi/libavfilter.so
+        )
+
+set_target_properties(
+            avformat
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi/libavformat.so
+            )
+
+set_target_properties(
+            avutil
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi/libavutil.so
+            )
+
+set_target_properties(
+            swresample
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi/libswresample.so
+             )
+
+set_target_properties(
+            swscale
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi/libswscale.so
+             )
+
+
+set_target_properties(
+            fdk-aac
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi/libfdk-aac.so
+             )
+endif(${ANDROID_ABI} STREQUAL "armeabi")
+
+if(${ANDROID_ABI} STREQUAL "armeabi-v7a")
+
+set_target_properties(
+    avcodec
+    PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/armeabi-v7a/libavcodec.so
+    )
+
+set_target_properties(
+        avfilter
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/libs/armeabi-v7a/libavfilter.so
+        )
+
+set_target_properties(
+            avformat
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi-v7a/libavformat.so
+            )
+
+set_target_properties(
+            avutil
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi-v7a/libavutil.so
+            )
+
+set_target_properties(
+            swresample
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi-v7a/libswresample.so
+             )
+
+set_target_properties(
+            swscale
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi-v7a/libswscale.so
+             )
+
+
+set_target_properties(
+            fdk-aac
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/armeabi-v7a/libfdk-aac.so
+             )
+
+endif(${ANDROID_ABI} STREQUAL "armeabi-v7a")
+
+if(${ANDROID_ABI} STREQUAL "arm64-v8a")
+set_target_properties(
+    avcodec
+    PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/arm64-v8a/libavcodec.so
+    )
+
+set_target_properties(
+        avfilter
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/libs/arm64-v8a/libavfilter.so
+        )
+
+set_target_properties(
+            avformat
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/arm64-v8a/libavformat.so
+            )
+
+set_target_properties(
+            avutil
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/arm64-v8a/libavutil.so
+            )
+
+set_target_properties(
+            swresample
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/arm64-v8a/libswresample.so
+             )
+
+set_target_properties(
+            swscale
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/arm64-v8a/libswscale.so
+             )
+
+
+set_target_properties(
+            fdk-aac
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/arm64-v8a/libfdk-aac.so
+             )
+endif(${ANDROID_ABI} STREQUAL "arm64-v8a")
+
+if(${ANDROID_ABI} STREQUAL "x86")
+set_target_properties(
+    avcodec
+    PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/x86/libavcodec.so
+    )
+
+set_target_properties(
+        avfilter
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/libs/x86/libavfilter.so
+        )
+
+set_target_properties(
+            avformat
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86/libavformat.so
+            )
+
+set_target_properties(
+            avutil
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86/libavutil.so
+            )
+
+set_target_properties(
+            swresample
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86/libswresample.so
+             )
+
+set_target_properties(
+            swscale
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86/libswscale.so
+             )
+
+set_target_properties(
+            fdk-aac
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86/libfdk-aac.so
+             )
+endif(${ANDROID_ABI} STREQUAL "x86")
+
+if(${ANDROID_ABI} STREQUAL "x86_64")
+set_target_properties(
+    avcodec
+    PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/libs/x86_64/libavcodec.so
+    )
+
+set_target_properties(
+        avfilter
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/libs/x86_64/libavfilter.so
+        )
+
+set_target_properties(
+            avformat
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86_64/libavformat.so
+            )
+
+set_target_properties(
+            avutil
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86_64/libavutil.so
+            )
+
+set_target_properties(
+            swresample
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86_64/libswresample.so
+             )
+
+set_target_properties(
+            swscale
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86_64/libswscale.so
+             )
+
+set_target_properties(
+            fdk-aac
+            PROPERTIES IMPORTED_LOCATION
+            ${CMAKE_SOURCE_DIR}/libs/x86_64/libfdk-aac.so
+             )
+endif(${ANDROID_ABI} STREQUAL "x86_64")
+
+include_directories(
+    src/ffmpeg-3.2.5/
+
+)
+# Searches for a specified prebuilt library and stores the path as a
+# variable. Because CMake includes system libraries in the search path by
+# default, you only need to specify the name of the public NDK library
+# you want to add. CMake verifies that the library exists before
+# completing its build.
+
+find_library( # Sets the name of the path variable.
               log-lib
+
+              # Specifies the name of the NDK library that
+              # you want CMake to locate.
               log )
 
-add_library( avutil-55
-             SHARED
-             IMPORTED )
-set_target_properties( avutil-55
-                       PROPERTIES IMPORTED_LOCATION
-                       ../../../../libs/armeabi-v7a/libavutil-55.so )
-add_library( swresample-2
-             SHARED
-             IMPORTED )
-set_target_properties( swresample-2
-                       PROPERTIES IMPORTED_LOCATION
-                       ../../../../libs/armeabi-v7a/libswresample-2.so )
-add_library( avcodec-57
-             SHARED
-             IMPORTED )
-set_target_properties( avcodec-57
-                       PROPERTIES IMPORTED_LOCATION
-                       ../../../../libs/armeabi-v7a/libavcodec-57.so )
-add_library( avfilter-6
-             SHARED
-             IMPORTED)
-set_target_properties( avfilter-6
-                       PROPERTIES IMPORTED_LOCATION
-                       ../../../../libs/armeabi-v7a/libavfilter-6.so )
-add_library( swscale-4
-             SHARED
-             IMPORTED)
-set_target_properties( swscale-4
-                       PROPERTIES IMPORTED_LOCATION
-                       ../../../../libs/armeabi-v7a/libswscale-4.so )
-add_library( avdevice-57
-             SHARED
-             IMPORTED)
-set_target_properties( avdevice-57
-                       PROPERTIES IMPORTED_LOCATION
-                       ../../../../libs/armeabi-v7a/libavdevice-57.so )
-add_library( avformat-57
-             SHARED
-             IMPORTED)
-set_target_properties( avformat-57
-                       PROPERTIES IMPORTED_LOCATION
-                       ../../../../libs/armeabi-v7a/libavformat-57.so )
+# Specifies libraries CMake should link to your target library. You
+# can link multiple libraries, such as libraries you define in this
+# build script, prebuilt third-party libraries, or system libraries.
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
-
-# 配置so库信息
-# native-lib 声明引用so库的名称
-# SHARED表示共享so库文件
-# 最后是构建so库的源文件
-add_library(
-             native-lib
-             SHARED
-             src/main/cpp/native-lib.cpp )
-# STATIC 表示静态库，在链接其他目标的时候使用
-# SHARED 表示动态库，会被动态链接，在运行时加载
-# MODULE 模块库不会被链接到其他目标中，可能会在运行时使用dlopen-系列函数动态链接
-
-# 配置头文件
-# include_directories([AFTER|BEFORE][SYSTEM]dir[dir...])
-include_directories(libs/include)
-
-# 本地库调用了log库的方法，关联到本地库
-target_link_libraries(
-                       native-lib
-                       swresample-2 avcodec-57 avfilter-6 swscale-4 avdevice-57 avformat-57
+target_link_libraries( # Specifies the target library.
+                       ffmpeg_jni
+                       fdk-aac
+                       avcodec
+                       avfilter
+                       avformat
+                       avutil
+                       swresample
+                       swscale
+                       # Links the target library to the log library
+                       # included in the NDK.
                        ${log-lib} )
-
-# 使用第三方so库，只需要引入不需要构建
-# add_library( imported-lib
-#             SHARED
-#             IMPORTED
-# )
-# 同时需要指定so库的路径
-# set_target_properties(target1 target2 ...
-#                    PROPERTIES prop1 value1
-#                    prop2 value2 ...)
-# 使用已经存在的so库，不应该配置target_link_libraries()方法，应该其不需要build
