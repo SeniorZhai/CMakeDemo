@@ -4,14 +4,14 @@
 #include <jni.h>
 
 JNIEXPORT jint JNICALL
-Java_io_seniorzhai_cmake_MainActivity_CMDRun(JNIEnv *env, jclass type,
+Java_io_seniorzhai_cmake_NativeBridge_CMDRun(JNIEnv *env, jclass type,
                                                                        jobjectArray commands);
 
 void log_callback(void* ptr, int level, const char* fmt,
                             va_list vl);
 
 JNIEXPORT void JNICALL
-Java_io_seniorzhai_cmake_MainActivity_initFFmpeg(JNIEnv *env, jclass type,
+Java_io_seniorzhai_cmake_NativeBridge_initFFmpeg(JNIEnv *env, jclass type,
         jboolean debug,
 jstring logUrl_);
 

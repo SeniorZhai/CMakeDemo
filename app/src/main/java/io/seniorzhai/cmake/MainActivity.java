@@ -14,18 +14,6 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("avutil");
-        System.loadLibrary("fdk-aac");
-        System.loadLibrary("avcodec");
-        System.loadLibrary("avformat");
-        System.loadLibrary("avfilter");
-        System.loadLibrary("swresample");
-        System.loadLibrary("swscale");
-        System.loadLibrary("ffmpeg_jni");
-    }
-
     private final int PERMISSION_REQUEST_CODE = 0x001;
     private static final String[] permissionManifest = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -41,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         inFile = (EditText) findViewById(R.id.inFile);
         outFile = (EditText) findViewById(R.id.outFile);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        NativeBridge.nativeRelease();
     }
 
     public void task(View view) {
@@ -85,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private void task() {
         if (isInit) {
             isInit = false;
-            initFFmpeg(true, "/storage/emulated/0/ffmpeg_log.txt");
+            NativeBridge.initFFmpeg(true, "/storage/emulated/0/ffmpeg_log.txt");
         }
         captureThumbnails(inFile.getText().toString(), outFile.getText().toString());
     }
@@ -95,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, result == 0 ? "success" : "fail", Toast.LENGTH_SHORT).show();
     }
 
-    public static native int initFFmpeg(boolean debug, String logPath);
 
     private static String getCaptureThumbnailsCMD(String videopath, String outoutPath, String ss) {
         if (ss == null) {
@@ -110,9 +103,7 @@ public class MainActivity extends AppCompatActivity {
     public static int ffmpegRunCMD(String cmd) {
         String regulation = "[ \\t]+";
         final String[] split = cmd.split(regulation);
-        return CMDRun(split);
+        return NativeBridge.CMDRun(split);
     }
-
-    public static native int CMDRun(String cmd[]);
 
 }

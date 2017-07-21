@@ -6,7 +6,7 @@
  * 以命令行方式运行，返回0表示成功
  */
 JNIEXPORT jint JNICALL
-Java_io_seniorzhai_cmake_MainActivity_CMDRun(JNIEnv *env, jclass type,
+Java_io_seniorzhai_cmake_NativeBridge_CMDRun(JNIEnv *env, jclass type,
         jobjectArray commands){
     int argc = (*env)->GetArrayLength(env,commands);
     char *argv[argc];
@@ -29,7 +29,7 @@ char *logUrl;
  * 初始化debug工具
  */
 JNIEXPORT void JNICALL
-Java_io_seniorzhai_cmake_MainActivity_initFFmpeg(JNIEnv *env, jclass type,
+Java_io_seniorzhai_cmake_NativeBridge_initFFmpeg(JNIEnv *env, jclass type,
                                                                            jboolean debug,
                                                                            jstring logUrl_) {
     JNI_DEBUG = debug;

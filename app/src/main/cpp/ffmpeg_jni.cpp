@@ -21,7 +21,7 @@ JXPCMEncodeAAC *aac_encoder;
  */
 extern "C"
 JNIEXPORT jint JNICALL
-Java_io_seniorzhai_cmake_MainActivity_prepareJXFFmpegEncoder(JNIEnv *env,
+Java_io_seniorzhai_cmake_NativeBridge_prepareJXFFmpegEncoder(JNIEnv *env,
                                                                                         jclass type,
                                                                                         jstring media_base_path_,
                                                                                         jstring media_name_,
@@ -98,7 +98,7 @@ Java_io_seniorzhai_cmake_MainActivity_prepareJXFFmpegEncoder(JNIEnv *env,
  */
 extern "C"
 JNIEXPORT jint JNICALL
-Java_io_seniorzhai_cmake_MainActivity_encodeFrame2H264(JNIEnv *env,
+Java_io_seniorzhai_cmake_NativeBridge_encodeFrame2H264(JNIEnv *env,
                                                                                   jclass type,
                                                                                   jbyteArray data_) {
 
@@ -113,7 +113,7 @@ Java_io_seniorzhai_cmake_MainActivity_encodeFrame2H264(JNIEnv *env,
  */
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_io_seniorzhai_cmake_MainActivity_getFFmpegConfig(JNIEnv *env,
+Java_io_seniorzhai_cmake_NativeBridge_getFFmpegConfig(JNIEnv *env,
                                                                                  jclass type) {
 
     return getEncoderConfigInfo(env);
@@ -124,7 +124,7 @@ Java_io_seniorzhai_cmake_MainActivity_getFFmpegConfig(JNIEnv *env,
  */
 extern "C"
 JNIEXPORT jint JNICALL
-Java_io_seniorzhai_cmake_MainActivity_encodeFrame2AAC(JNIEnv *env,
+Java_io_seniorzhai_cmake_NativeBridge_encodeFrame2AAC(JNIEnv *env,
                                                                                  jclass type,
                                                                                  jbyteArray data_) {
     return aac_encoder->sendOneFrame((uint8_t *) env->GetByteArrayElements(data_, 0));
@@ -136,7 +136,7 @@ Java_io_seniorzhai_cmake_MainActivity_encodeFrame2AAC(JNIEnv *env,
  */
 extern "C"
 JNIEXPORT jint JNICALL
-Java_io_seniorzhai_cmake_MainActivity_recordEnd(JNIEnv *env,
+Java_io_seniorzhai_cmake_NativeBridge_recordEnd(JNIEnv *env,
                                                                            jclass type) {
 
     if (h264_encoder != NULL) {
@@ -154,7 +154,7 @@ Java_io_seniorzhai_cmake_MainActivity_recordEnd(JNIEnv *env,
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_io_seniorzhai_cmake_MainActivity_nativeRelease(JNIEnv *env,
+Java_io_seniorzhai_cmake_NativeBridge_nativeRelease(JNIEnv *env,
                                                                                jclass type) {
 
     if (aac_encoder != NULL) {
